@@ -1,0 +1,49 @@
+-- RNI
+-- LocalScript : StarterPlayer > StarterPlayerScripts
+-- Affiche le nombre de joueurs et le JobId du serveur actuel.
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "RNI"
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Name = "Panel"
+frame.Size = UDim2.fromOffset(280, 96)
+frame.Position = UDim2.new(0, 12, 0, 12)
+frame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+frame.BackgroundTransparency = 0.15
+frame.BorderSizePixel = 0
+frame.Parent = gui
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 10)
+corner.Parent = frame
+
+local label = Instance.new("TextLabel")
+label.Size = UDim2.new(1, -16, 1, -16)
+label.Position = UDim2.fromOffset(8, 8)
+label.BackgroundTransparency = 1
+label.TextColor3 = Color3.fromRGB(240, 240, 240)
+label.TextXAlignment = Enum.TextXAlignment.Left
+label.TextYAlignment = Enum.TextYAlignment.Top
+label.Font = Enum.Font.Code
+label.TextSize = 14
+label.TextWrapped = true
+label.Parent = frame
+
+local function update()
+    local count = #Players:GetPlayers()
+    label.Text = string.format(
+        "RNI — Serveur actuel\nJoueurs : %d\nJobId : %s",
+        count,
+        tostring(game.JobId)
+    )
+end
+
+Players.PlayerAdded:Connect(update)
+Players.PlayerRemoving:Connect(update)
+update()
